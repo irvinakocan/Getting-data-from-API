@@ -20,8 +20,7 @@ class ViewController: UIViewController {
     }
     
     private func getData(from url: String) {
-        var result: Response?
-
+    
         //We will utilize the url session
         let task = URLSession.shared.dataTask(with: URLRequest(url: URL(string: url)!), completionHandler: {data, response, error in
             guard let data = data, error == nil else {
@@ -31,20 +30,19 @@ class ViewController: UIViewController {
             
             // Now that we have the data we need to convert the data which is bytes to our model struct(Result) and it is knows as JSON decoding
 
+            var result: Response
             do {
                 result = try JSONDecoder().decode(Response.self, from: data)
             }
             catch {
                 print("Failed to convert \(error.localizedDescription)")
-            }
-            
-            guard let json = result else {
                 return
             }
-            print(json.status)
-            print(json.results.sunrise)
-            print(json.results.sunset)
-            print(json.results.astronomical_twilight_begin)
+            
+            print(result.status)
+            print(result.results.sunrise)
+            print(result.results.sunset)
+            print(result.results.astronomical_twilight_begin)
         })
         task.resume()
     }
